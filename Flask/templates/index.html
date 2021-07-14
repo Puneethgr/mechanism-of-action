@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Mechanism Of Action</title> 
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+ <div>
+	<h1>Predict Mechanism of Action (MoA) of a drug</h1>
+    <form action="{{ url_for('predict')}}" method="post" 
+          enctype="multipart/form-data">
+    <p>Upload the dataset (CSV File):</p>
+        <label for="csvupload"/>
+        <input type="file" id="csvupload" 
+               name="csvfile" accept=".csv" 
+               required 
+               oninput="setCustomValidity('')"
+               oninvalid="this.setCustomValidity('Please upload CSV file')"/>
+        <br/> 
+        <br/>
+        <button type="submit">Predict</button>
+    </form>
+
+   <br/> 
+   <br/>
+    {% for moa in moaList %}
+      <h3> Drug ID : {{moa[0]}} </h3>
+      <p> Top {{NUMBER_OF_TOP_MOA}} MoA : </p>
+
+      <table>
+        <tr>
+          <th>Id of the class of drug</th>
+          <th>Class of drug</th>
+          <th>Probability</th>
+        </tr>
+        {% for i in range(1,moa| length) %}
+          <tr>
+            <td> {{ moa[i][0] }} </td>
+            <td> {{ moa[i][1] }} </td>
+            <td> {{ moa[i][2] }} </td>
+          </tr>
+        {% endfor %}
+      </table>
+      <h3> Scatter Plot for Drug ID : {{moa[0]}} <h3/>
+      <img src="{{SCATTER_PLOT_DIRECTORY}}/scatterimage{{loop.index0}}.jpeg"
+           alt="Scatterplot Not found"/>
+      <p> --------- </p>
+    {% endfor %}
+ </div>
+</body>
+</html>
