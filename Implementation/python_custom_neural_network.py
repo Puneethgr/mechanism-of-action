@@ -97,7 +97,7 @@ column_names.remove('sig_id')
 
 dictionary['sig_id'] = test_id
 for i in range(len(y_pred)):
-    for j in range(206):
+    for j in range(len(column_names)):
         dictionary[column_names[j]].append(y_pred[i][j])
 
 df=pd.DataFrame(dictionary)
